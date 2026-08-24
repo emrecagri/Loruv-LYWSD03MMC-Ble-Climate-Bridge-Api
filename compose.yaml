@@ -1,0 +1,76 @@
+# ============================================================
+# Loruv LYWSD03MMC BLE Climate Bridge API
+# Docker Compose / Portainer Stack
+# ============================================================
+
+services:
+
+  loruv-lywsd03mmc-climate-bridge-api:
+
+    # GitHub Actions tarafından GHCR'a yayınlanacak image.
+    image: ghcr.io/emrecagri/loruv-lywsd03mmc-ble-climate-bridge-api:latest
+
+    # Portainer'da başka servislerle karışmaması için özel isim.
+    container_name: loruv-lywsd03mmc-climate-bridge-api
+
+    restart: unless-stopped
+
+    ports:
+      - "${API_PORT:-8765}:8765"
+
+    environment:
+
+      # ------------------------------------------------------
+      # API
+      # ------------------------------------------------------
+
+      APP_NAME: "${APP_NAME:-Loruv LYWSD03MMC BLE Climate Bridge API}"
+      APP_VERSION: "${APP_VERSION:-0.1.0}"
+      API_PORT: "${API_PORT:-8765}"
+      LOG_LEVEL: "${LOG_LEVEL:-INFO}"
+
+      # ------------------------------------------------------
+      # BLE
+      # ------------------------------------------------------
+
+      BLE_TARGET_DEVICE_NAME: "${BLE_TARGET_DEVICE_NAME:-LYWSD03MMC}"
+      BLE_SCAN_SECONDS: "${BLE_SCAN_SECONDS:-10}"
+      BLE_CONNECT_TIMEOUT_SECONDS: "${BLE_CONNECT_TIMEOUT_SECONDS:-30}"
+      GATT_READ_TIMEOUT_SECONDS: "${GATT_READ_TIMEOUT_SECONDS:-5}"
+      READ_GATT_DESCRIPTORS: "${READ_GATT_DESCRIPTORS:-true}"
+
+      # Host BlueZ system bus.
+      DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/run/dbus/system_bus_socket"
+
+      # ------------------------------------------------------
+      # CACHE
+      # ------------------------------------------------------
+
+      CACHE_TTL_SECONDS: "${CACHE_TTL_SECONDS:-60}"
+
+      # ------------------------------------------------------
+      # ÖZEL CİHAZ İSİMLERİ
+      # ------------------------------------------------------
+
+      # Portainer Stack environment değişkeninden girilebilir.
+      # Boş bırakılırsa cihazlara MAC tabanlı otomatik isim verilir.
+      DEVICE_ALIASES: "${DEVICE_ALIASES:-}"
+
+    volumes:
+
+      # Raspberry Pi host üzerinde çalışan BlueZ'e erişim.
+      # Read-only mount kullanılır.
+      - /run/dbus:/run/dbus:ro
+
+    # Uygulamanın container filesystem'ine yazmasına gerek yoktur.
+    read_only: true
+
+    # Gerekli geçici yazma alanı RAM üzerinde tutulur.
+    tmpfs:
+      - /tmp
+
+    # Container içerisindeki process yeni privilege kazanamaz.
+    security_opt:
+      - no-new-privileges:true
+
+    stop_grace_period: 20s

@@ -1,0 +1,18 @@
+# ============================================================
+# Loruv LYWSD03MMC BLE Climate Bridge API
+# Python bağımlılıkları
+# ============================================================
+
+# REST API framework'ü.
+# Swagger ve OpenAPI desteğini de sağlar.
+fastapi>=0.116,<1.0
+
+# FastAPI uygulamasını çalıştıran hafif ASGI sunucusu.
+uvicorn>=0.35,<1.0
+
+# Linux üzerindeki BlueZ ile Bluetooth Low Energy haberleşmesi.
+# Raspberry Pi testimizde başarıyla kullandığımız sürüm.
+bleak==3.0.2
+
+# .env ve Docker environment değişkenlerini tip güvenli okur.
+pydantic-settings>=2.10,<3.0

@@ -1,0 +1,25 @@
+# ============================================================
+# Docker build dışında bırakılacak dosyalar
+# ============================================================
+
+.git/
+.github/
+
+.env
+.env.*
+
+!.env.example
+
+__pycache__/
+*.py[cod]
+
+.venv/
+venv/
+
+tests/
+
+.DS_Store
+*.log
+
+README.md
+LICENSE

@@ -1,0 +1,85 @@
+# ============================================================
+# Loruv LYWSD03MMC BLE Climate Bridge API
+# Multi-architecture Docker image publisher
+# ============================================================
+
+name: Docker Publish
+
+on:
+
+  # main branch'e her push sonrası image oluşturur.
+  push:
+    branches:
+      - main
+
+    # v1.0.0 gibi release tag'lerinde de çalışır.
+    tags:
+      - "v*"
+
+  # GitHub Actions ekranından manuel çalıştırılabilir.
+  workflow_dispatch:
+
+permissions:
+
+  # Repository kaynak kodunu okuyabilmek için.
+  contents: read
+
+  # GitHub Container Registry'ye image yazmak için.
+  packages: write
+
+env:
+
+  # GHCR image adı tamamen lowercase tutulur.
+  IMAGE_NAME: ghcr.io/emrecagri/loruv-lywsd03mmc-ble-climate-bridge-api
+
+jobs:
+
+  docker:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Repository kaynak kodunu runner'a indirir.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ARM64 image build edebilmek için QEMU kurar.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Docker Buildx multi-platform builder kurar.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # GitHub Container Registry girişini yapar.
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Docker tag ve OCI label'larını üretir.
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-
+            type=ref,event=tag
+
+      # Raspberry Pi ARM64 ve standart amd64 image'larını
+      # tek manifest altında oluşturup GHCR'a yollar.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: |
+            linux/amd64
+            linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
