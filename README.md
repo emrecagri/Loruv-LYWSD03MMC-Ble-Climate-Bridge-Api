@@ -1,16 +1,8 @@
 # Loruv LYWSD03MMC BLE Climate Bridge API
 
-<p align="center">
+<p align="center"><strong>A lightweight, read-only BLE-to-REST API bridge for LYWSD03MMC temperature and humidity monitors.</strong></p>
 
-  <strong>A lightweight, read-only BLE-to-REST API bridge for LYWSD03MMC temperature and humidity monitors.</strong>
-
-</p>
-
-<p align="center">
-
-  Raspberry Pi • Linux • BlueZ • Docker • Portainer • FastAPI
-
-</p>
+<p align="center">Raspberry Pi • Linux • BlueZ • Docker • Portainer • FastAPI</p>
 
 <p align="center">
   <a href="#english">🇬🇧 English</a>&nbsp;•&nbsp;<a href="#turkce">🇹🇷 Türkçe</a>
