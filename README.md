@@ -5,7 +5,7 @@
 <p align="center">Raspberry Pi • Linux • BlueZ • Docker • Portainer • FastAPI</p>
 
 <p align="center">
-  <a href="#english">🇬🇧 English</a>&nbsp;•&nbsp;<a href="#turkce">🇹🇷 Türkçe</a>
+  <a href="#english">🇬🇧 English</a>&nbsp;•&nbsp;<a href="#turkce">🇹🇷 Türkçe</a>•&nbsp;<a href="https://emrecb.com/blog/sunucu/lywsd03mmc-ble-climate-bridge-api-raspberry-pi-iot-projesi/">Blog</a>
 </p>
 
 ---
